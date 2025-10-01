@@ -1,0 +1,16 @@
+@import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;700&display=swap');
+:root{--retro-ink:#1d1d1d;--retro-cream:#f6f5ef;--retro-gold:#ffcc66;}
+body{font-family:'Space Grotesk',system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif;background:var(--retro-cream);color:#222;}
+.navbar{background:linear-gradient(90deg,#2b2b2b,#1d1d1d)}
+.hero{min-height:62vh;background-size:cover;background-position:center;position:relative;color:#fff}
+.hero::after{content:"";position:absolute;inset:0;background:rgba(0,0,0,.35)}
+.hero .container{position:relative;z-index:2}
+.stat-box{background:#fff;border-radius:16px;padding:20px;text-align:center;box-shadow:0 10px 24px rgba(0,0,0,.07)}
+.stat-value{font-size:28px;font-weight:700}
+.stat-label{color:#6c757d}
+footer{background:#0f0f0f;color:#d0d0d0}
+footer a{color:#e7e7e7;text-decoration:none}
+footer a:hover{text-decoration:underline}
+.card{border:0;border-radius:18px;box-shadow:0 10px 24px rgba(0,0,0,.07)}
+.btn-warning{background:var(--retro-gold);border-color:var(--retro-gold);color:#222}
+#map{height:380px}

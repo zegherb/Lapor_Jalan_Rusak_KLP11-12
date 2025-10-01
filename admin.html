@@ -1,0 +1,105 @@
+<!doctype html>
+<html lang="id">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>LAJARUS</title>
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+<link rel="stylesheet" href="assets/css/style.css">
+
+</head>
+<body>
+<nav class="navbar navbar-expand-lg navbar-dark shadow-sm sticky-top">
+  <div class="container">
+    <a class="navbar-brand fw-bold" href="index.html">LAJARUS</a>
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbars" aria-controls="navbars" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbars">
+      <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
+        <li class="nav-item"><a class="nav-link" href="laporan.html">Laporan</a></li>
+        <li class="nav-item"><a class="nav-link" href="riwayat.html">Riwayat</a></li>
+        <li class="nav-item"><a class="nav-link" href="admin.html">Admin Panel</a></li>
+        <li class="nav-item"><a class="nav-link" href="#kontak">Kontak</a></li>
+      </ul>
+      <div class="d-flex ms-3">
+        <a href="auth/login.html" class="btn btn-outline-light">Masuk / Daftar</a>
+      </div>
+    </div>
+  </div>
+</nav>
+
+<div class="container py-5">
+  <div class="d-flex justify-content-between align-items-center mb-3">
+    <h2>Admin Panel (Mock)</h2>
+    <div class="d-flex gap-2">
+      <select class="form-select">
+        <option>Semua Status</option>
+        <option>Belum Diverifikasi</option>
+        <option>Diverifikasi</option>
+        <option>Selesai</option>
+        <option>Ditolak</option>
+      </select>
+      <button class="btn btn-outline-secondary">Filter</button>
+    </div>
+  </div>
+  <div class="table-responsive">
+    <table class="table table-hover align-middle">
+      <thead><tr><th>ID</th><th>Foto</th><th>Pelapor</th><th>Lokasi</th><th>Dampak</th><th>Tingkat</th><th>Status</th><th>Aksi</th></tr></thead>
+      <tbody>
+        <tr>
+          <td>#1023</td>
+          <td><div class="ratio ratio-4x3 bg-secondary rounded" style="width:72px"></div></td>
+          <td>@budi</td>
+          <td>-6.20, 106.81</td>
+          <td>macet</td>
+          <td>tinggi</td>
+          <td><span class="badge text-bg-secondary">Belum Diverifikasi</span></td>
+          <td class="d-flex flex-wrap gap-1">
+            <button class="btn btn-sm btn-success">Verifikasi</button>
+            <button class="btn btn-sm btn-primary">Selesai</button>
+            <button class="btn btn-sm btn-warning">Tolak</button>
+            <button class="btn btn-sm btn-danger">Hapus</button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+<footer id="kontak" class="mt-5 pt-5 pb-4">
+  <div class="container">
+    <div class="row g-4">
+      <div class="col-md-4">
+        <h5 class="fw-bold">LAJARUS</h5>
+        <p class="small">Aplikasi pelaporan jalan rusak berbasis komunitas.</p>
+      </div>
+      <div class="col-md-4">
+        <h5 class="fw-bold">Fitur Unggulan</h5>
+        <ul class="small list-unstyled">
+          <li>Foto & lokasi (Maps)</li>
+          <li>Riwayat laporan</li>
+          <li>Verifikasi admin</li>
+        </ul>
+      </div>
+      <div class="col-md-4">
+        <h5 class="fw-bold">Kontak</h5>
+        <ul class="small list-unstyled">
+          <li>Email: support@lajarus.local</li>
+          <li>WhatsApp: +62 812-0000-0000</li>
+          <li>Instagram: @lajarus.id</li>
+        </ul>
+      </div>
+    </div>
+    <hr class="border-secondary">
+    <div class="d-flex justify-content-between small text-secondary">
+      <span>© <span id="year"></span> LAJARUS</span>
+      <span>Dibuat dengan ❤</span>
+    </div>
+  </div>
+</footer>
+<script>document.getElementById('year').textContent = new Date().getFullYear();</script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+<script src="assets/js/app.js"></script>
+
+</body>
+</html>

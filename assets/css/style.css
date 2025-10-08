@@ -35,7 +35,7 @@ body.with-fixed-nav {
 /* Hero */
 .hero {
   position: relative;
-  background: var(--rr-bg) url("../assets/hero.jpg") center/cover no-repeat;
+  background: var(--rr-bg) url("../img/hero.jpg") center/cover no-repeat;
   color: var(--rr-text);
 }
 .hero::before {
@@ -109,7 +109,7 @@ body.with-fixed-nav {
 /* Banner */
 .band {
   position: relative;
-  background: url("../assets/banner.jpg") center/cover no-repeat;
+  background: url("../img/banner.jpg") center/cover no-repeat;
   color: #e9eef3;
   border-radius: 18px;
   overflow: hidden;
@@ -196,7 +196,7 @@ footer a:hover {
   }
 }
 .login-right {
-  background: url("../assets/banner.jpg") center/cover no-repeat;
+  background: url("../img/banner.jpg") center/cover no-repeat;
   position: relative;
 }
 .login-right::before {

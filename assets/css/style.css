@@ -210,3 +210,84 @@ footer a:hover {
   z-index: 1;
   color: #e9eef3;
 }
+
+/* History */
+.ljr-topbar {
+  background: #2f353a;
+  padding: 0.9rem 0;
+}
+.ljr-topbar-icon {
+  width: 36px;
+  height: 36px;
+  border-radius: 10px;
+  background: rgba(255, 255, 255, 0.12);
+  color: #ffd24a;
+  font-size: 1.25rem;
+}
+
+.ljr-stat .card-body {
+  border-radius: 14px;
+}
+.ljr-tabs .nav-link {
+  background: #eef1f4;
+  color: #5b6670;
+  border-radius: 12px;
+  padding: 0.45rem 0.9rem;
+  font-weight: 600;
+}
+.ljr-tabs .nav-link.active {
+  background: #2f353a;
+  color: #fff;
+}
+
+.ljr-report-item {
+  border: 1px solid #e7ebef;
+  border-radius: 16px;
+  overflow: hidden;
+}
+
+.ljr-badge-menunggu {
+  background: #fff2cd;
+  color: #b37b00;
+  border: 1px solid #ffe08a;
+}
+.ljr-badge-proses {
+  background: #e7f0ff;
+  color: #0a58ca;
+  border: 1px solid #cfe0ff;
+}
+.ljr-badge-selesai {
+  background: #eaf7ee;
+  color: #1f7a39;
+  border: 1px solid #cbead4;
+}
+
+.ljr-btn-detail {
+  font-weight: 600;
+  border-radius: 10px;
+}
+
+.ljr-severity-badge {
+  position: absolute;
+  left: 12px;
+  bottom: 12px;
+  padding: 0.25rem 0.6rem;
+  font-weight: 700;
+  border-radius: 10px;
+  font-size: 0.8rem;
+  color: #fff;
+}
+.ljr-sev-high {
+  background: #d93434;
+}
+.ljr-sev-mid {
+  background: #f0ad2d;
+}
+.ljr-sev-low {
+  background: #2eaa66;
+}
+
+.ljr-form {
+  border: 1px solid #e7ebef;
+  border-radius: 16px;
+}

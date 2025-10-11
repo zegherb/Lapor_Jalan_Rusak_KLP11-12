@@ -29,3 +29,15 @@
       document.getElementById('stat-selesai').textContent = selesai;
     }
     refreshStats();
+
+//  const form = document.getElementById('verify_email');
+//     const popup = document.getElementById('popup');
+
+//     form.addEventListener('submit', function(event){
+//         event.preventDefault();
+//         popup.classList.remove('d-none');
+
+//         setTimeout(() => {
+//         popup.classList.add('d-none');
+//     },  3000);
+//     });

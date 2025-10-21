@@ -30,52 +30,82 @@
 
   <main class="container py-4 mt-5">
     <!-- Ringkasan -->
-    <section class="row g-3 mb-3">
-      <div class="col-6 col-lg-3">
-        <div class="card ljr-stat h-100">
-          <div class="card-body">
-            <div class="d-flex justify-content-between align-items-center mb-2">
-              <span class="text-secondary small">Total Laporan</span>
-              <i class="bi bi-graph-up-arrow"></i>
-            </div>
-            <div class="display-6 fw-bold" id="stat-total">5</div>
-          </div>
+   <section class="row g-3 mb-3">
+  <!-- Baris 1 -->
+  <div class="col-6 col-lg-3">
+    <div class="card ljr-stat h-100">
+      <div class="card-body">
+        <div class="d-flex justify-content-between align-items-center mb-2">
+          <span class="text-secondary small">Total Laporan</span>
+          <i class="bi bi-graph-up-arrow"></i>
         </div>
+        <div class="display-6 fw-bold" id="stat-total">7</div>
       </div>
-      <div class="col-6 col-lg-3">
-        <div class="card ljr-stat h-100">
-          <div class="card-body">
-            <div class="d-flex justify-content-between align-items-center mb-2">
-              <span class="text-secondary small">Menunggu</span>
-              <i class="bi bi-exclamation-triangle"></i>
-            </div>
-            <div class="display-6 fw-bold text-warning" id="stat-menunggu">1</div>
-          </div>
+    </div>
+  </div>
+
+  <div class="col-6 col-lg-3">
+    <div class="card ljr-stat h-100">
+      <div class="card-body">
+        <div class="d-flex justify-content-between align-items-center mb-2">
+          <span class="text-secondary small">Menunggu</span>
+          <i class="bi bi-hourglass-split"></i>
         </div>
+        <div class="display-6 fw-bold text-warning" id="stat-menunggu">1</div>
       </div>
-      <div class="col-6 col-lg-3">
-        <div class="card ljr-stat h-100">
-          <div class="card-body">
-            <div class="d-flex justify-content-between align-items-center mb-2">
-              <span class="text-secondary small">Dalam Proses</span>
-              <i class="bi bi-clock-history"></i>
-            </div>
-            <div class="display-6 fw-bold text-primary" id="stat-proses">2</div>
-          </div>
+    </div>
+  </div>
+
+  <div class="col-6 col-lg-3">
+    <div class="card ljr-stat h-100">
+      <div class="card-body">
+        <div class="d-flex justify-content-between align-items-center mb-2">
+          <span class="text-secondary small">Diverifikasi</span>
+          <i class="bi bi-shield-check"></i>
         </div>
+        <div class="display-6 fw-bold text-purple" style="color:#7b61ff" id="stat-diverifikasi">1</div>
       </div>
-      <div class="col-6 col-lg-3">
-        <div class="card ljr-stat h-100">
-          <div class="card-body">
-            <div class="d-flex justify-content-between align-items-center mb-2">
-              <span class="text-secondary small">Selesai</span>
-              <i class="bi bi-check2-circle"></i>
-            </div>
-            <div class="display-6 fw-bold text-success" id="stat-selesai">2</div>
-          </div>
+    </div>
+  </div>
+
+  <div class="col-6 col-lg-3">
+    <div class="card ljr-stat h-100">
+      <div class="card-body">
+        <div class="d-flex justify-content-between align-items-center mb-2">
+          <span class="text-secondary small">Proses</span>
+          <i class="bi bi-clock-history"></i>
         </div>
+        <div class="display-6 fw-bold text-primary" id="stat-proses">2</div>
       </div>
-    </section>
+    </div>
+  </div>
+
+  <!-- Baris 2 -->
+  <div class="col-6 col-lg-3">
+    <div class="card ljr-stat h-100">
+      <div class="card-body">
+        <div class="d-flex justify-content-between align-items-center mb-2">
+          <span class="text-secondary small">Selesai</span>
+          <i class="bi bi-check2-circle"></i>
+        </div>
+        <div class="display-6 fw-bold text-success" id="stat-selesai">2</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="col-6 col-lg-3">
+    <div class="card ljr-stat h-100">
+      <div class="card-body">
+        <div class="d-flex justify-content-between align-items-center mb-2">
+          <span class="text-secondary small">Ditolak</span>
+          <i class="bi bi-x-circle"></i>
+        </div>
+        <div class="display-6 fw-bold text-danger" id="stat-ditolak">1</div>
+      </div>
+    </div>
+  </div>
+</section>
+
 
     <!-- Tabs Filter -->
     <section class="mb-3">
@@ -246,7 +276,7 @@
 
   </main>
 
-  <!-- Modal Detail Laporan -->
+  <!-- Modal Detail Laporan (Ini pop up nya kalau tekan detail)-->
   <div class="modal fade" id="ljrDetailModal" tabindex="-1" aria-hidden="true">
     <div class="modal-dialog modal-lg modal-dialog-scrollable">
       <div class="modal-content">

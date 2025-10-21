@@ -1,0 +1,429 @@
+<!doctype html>
+<html lang="id">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Admin LAJARUS</title>
+
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+<link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" rel="stylesheet">
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"/>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@2"></script>
+
+<style>
+  :root{
+    --menunggu:#ffc107; --diverifikasi:#7b61ff; --proses:#0d6efd;
+    --selesai:#28a745; --ditolak:#dc3545; --soft:#f5f7fb;
+  }
+  body{ background:var(--soft); }
+  .sidebar{ width:260px; position:fixed; inset:0 auto 0 0; background:#fff; border-right:1px solid #e9ecef; padding:18px; overflow:auto; }
+  .user{display:flex; gap:12px; align-items:center; margin-bottom:16px;}
+  .user img{width:44px; height:44px; border-radius:50%;}
+  .nav .nav-link{ color:#6c757d; border-radius:10px; }
+  .nav .nav-link.active{ background:#eef2ff; color:#0d6efd; }
+  .content{ margin-left:260px; padding:18px; }
+  .view{ display:none; } .view.active{ display:block; }
+  #map{ height:360px; border-radius:12px; }
+  .mini{ font-size:12px; color:#6c757d; }
+  .icon{ width:40px; height:40px; border-radius:10px; display:flex; align-items:center; justify-content:center; color:#fff; }
+
+  /* Badges status (sesuai history.html) */
+  .badge-status{ font-weight:600; }
+  .badge-menunggu{ background:#fff3cd; color:#8a6d00; border:1px solid #ffec99; }
+  .badge-diverifikasi{ background:#e9e4ff; color:#4b2ee6; }
+  .badge-proses{ background:#0d6efd; }
+  .badge-selesai{ background:#28a745; }
+  .badge-ditolak{ background:#dc3545; }
+  .table thead th{ white-space:nowrap; }
+</style>
+</head>
+<body>
+
+<!-- SIDEBAR -->
+<aside class="sidebar">
+  <div class="user">
+    <img src="https://i.pravatar.cc/80?img=18" alt="Admin">
+    <div>
+      <div class="fw-semibold">Admin LAJARUS</div>
+      <div class="mini">Administrator</div>
+    </div>
+  </div>
+  <nav class="nav flex-column gap-1" id="nav">
+    <a class="nav-link active" data-view="dashboard" href="#"><i class="bi bi-grid me-2"></i>Dashboard</a>
+    <a class="nav-link" data-view="verifikasi" href="#"><i class="bi bi-shield-check me-2"></i>Verifikasi</a>
+    <a class="nav-link" data-view="laporan" href="#"><i class="bi bi-journal-text me-2"></i>Laporan</a>
+    <a class="nav-link" data-view="pengguna" href="#"><i class="bi bi-people me-2"></i>Pengguna</a>
+    <a class="nav-link" data-view="profil" href="#"><i class="bi bi-person-circle me-2"></i>Profil</a>
+    <hr>
+    <a class="btn btn-outline-primary"><i class="bi bi-box-arrow-right me-1"></i>Keluar</a>
+  </nav>
+</aside>
+
+<!-- MAIN -->
+<main class="content">
+  <h4 id="pageTitle" class="mb-3">Dashboard</h4>
+
+  <!-- ===== Dashboard ===== -->
+  <section id="view-dashboard" class="view active">
+    <div class="row g-3 mb-2">
+      <div class="col-md-2"><div class="card text-center"><div class="card-body">
+        <div class="icon bg-primary mb-2"><i class="bi bi-clipboard-data"></i></div><div>Total</div><div id="kpi-total" class="fw-bold fs-5">0</div>
+      </div></div></div>
+      <div class="col-md-2"><div class="card text-center"><div class="card-body">
+        <div class="icon" style="background:var(--menunggu)"><i class="bi bi-hourglass-split"></i></div><div>Menunggu</div><div id="kpi-menunggu" class="fw-bold fs-5">0</div>
+      </div></div></div>
+      <div class="col-md-2"><div class="card text-center"><div class="card-body">
+        <div class="icon" style="background:var(--diverifikasi)"><i class="bi bi-shield-check"></i></div><div>Diverifikasi</div><div id="kpi-diverifikasi" class="fw-bold fs-5">0</div>
+      </div></div></div>
+      <div class="col-md-2"><div class="card text-center"><div class="card-body">
+        <div class="icon" style="background:var(--proses)"><i class="bi bi-clock-history"></i></div><div>Proses</div><div id="kpi-proses" class="fw-bold fs-5">0</div>
+      </div></div></div>
+      <div class="col-md-2"><div class="card text-center"><div class="card-body">
+        <div class="icon" style="background:var(--selesai)"><i class="bi bi-check2-circle"></i></div><div>Selesai</div><div id="kpi-selesai" class="fw-bold fs-5">0</div>
+      </div></div></div>
+      <div class="col-md-2"><div class="card text-center"><div class="card-body">
+        <div class="icon" style="background:var(--ditolak)"><i class="bi bi-x-circle"></i></div><div>Ditolak</div><div id="kpi-ditolak" class="fw-bold fs-5">0</div>
+      </div></div></div>
+    </div>
+
+    <div class="row g-3">
+      <div class="col-lg-4">
+        <div class="card h-100"><div class="card-body">
+          <div class="fw-semibold mb-2">Distribusi Status</div>
+          <canvas id="donut" height="230"></canvas>
+          <div class="mini mt-2" id="txt-progress">0% selesai</div>
+        </div></div>
+      </div>
+      <div class="col-lg-8">
+        <div class="card h-100">
+          <div class="card-header bg-white d-flex justify-content-between align-items-center">
+            <div><div class="fw-semibold">Peta Kendari</div><div class="mini">Sebaran titik kerusakan</div></div>
+            <div class="btn-group btn-group-sm" id="mapFilter">
+              <button class="btn btn-outline-secondary active" data-filter="all">Semua</button>
+              <button class="btn btn-outline-warning" data-filter="menunggu">Menunggu</button>
+              <button class="btn btn-outline-primary" data-filter="diverifikasi">Diverifikasi</button>
+              <button class="btn btn-outline-info" data-filter="proses">Proses</button>
+              <button class="btn btn-outline-success" data-filter="selesai">Selesai</button>
+              <button class="btn btn-outline-danger" data-filter="ditolak">Ditolak</button>
+            </div>
+          </div>
+          <div class="card-body"><div id="map"></div></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== Verifikasi ===== -->
+  <section id="view-verifikasi" class="view">
+    <div class="card">
+      <div class="card-header bg-white d-flex justify-content-between align-items-center">
+        <div class="fw-semibold">Verifikasi Laporan</div>
+        <div class="mini">Ubah status laporan</div>
+      </div>
+      <div class="card-body table-responsive">
+        <table class="table align-middle">
+          <thead>
+            <tr>
+              <th>#</th>
+              <th>Judul</th>
+              <th>Tanggal</th>
+              <th>Status</th>
+              <th>Severity</th>
+              <th>Aksi</th>
+            </tr>
+          </thead>
+          <tbody id="tb-verifikasi"></tbody>
+        </table>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== Laporan (detail satu data dengan foto & dampak) ===== -->
+  <section id="view-laporan" class="view">
+    <div class="card">
+      <div class="card-header bg-white fw-semibold">Detail Laporan</div>
+      <div class="card-body">
+        <div class="row g-3 align-items-start" id="laporanDetail">
+          <div class="col-md-5">
+            <img id="lp-foto" class="img-fluid rounded w-100" alt="Foto laporan">
+          </div>
+          <div class="col-md-7">
+            <h5 id="lp-judul" class="mb-1">-</h5>
+            <div class="text-secondary small mb-2" id="lp-meta">-</div>
+
+            <div class="mb-2 d-flex align-items-center gap-2">
+              <span class="badge badge-status" id="lp-status">-</span>
+              <span class="badge" id="lp-severity">-</span>
+            </div>
+
+            <div class="mb-3">
+              <div class="fw-semibold">Dampak Kerusakan : Macet/Sesuai pilihan pengguna</div>
+              <p id="lp-dampak" class="mb-0">-</p>
+            </div>
+
+            <a id="lp-map" class="btn btn-outline-primary btn-sm" target="_blank" rel="noopener">
+              <i class="bi bi-geo-alt"></i> Lihat di Google Maps
+            </a>
+          </div>
+        </div>
+        <div class="text-secondary small mt-3">
+          *Hanya menampilkan satu data (contoh). Backend akan menentukan laporan mana yang ditampilkan.
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== Pengguna ===== -->
+  <section id="view-pengguna" class="view">
+    <div class="card">
+      <div class="card-header bg-white fw-semibold">Akun Pengguna</div>
+      <div class="card-body table-responsive">
+        <table class="table align-middle">
+          <thead><tr><th>#</th><th>Username</th><th>Email</th><th>Terdaftar</th><th>Aksi</th></tr></thead>
+          <tbody id="tb-users"></tbody>
+        </table>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== Profil ===== -->
+  <section id="view-profil" class="view">
+    <div class="row g-3">
+      <div class="col-md-4">
+        <div class="card h-100">
+          <div class="card-body text-center">
+            <img src="https://i.pravatar.cc/150?img=18" class="rounded-circle mb-3" width="110" height="110">
+            <h5 class="mb-0" id="pf-username">admin_lajarus</h5>
+            <div class="mini" id="pf-email">admin@example.com</div>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-8">
+        <div class="card">
+          <div class="card-header bg-white fw-semibold">Ubah Profil</div>
+          <div class="card-body">
+            <form id="formProfile" class="row g-3">
+              <div class="col-md-6">
+                <label class="form-label">Username</label>
+                <input type="text" id="inpUsername" class="form-control" value="admin_lajarus" required>
+              </div>
+              <div class="col-md-6">
+                <label class="form-label">Email</label>
+                <input type="email" id="inpEmail" class="form-control" value="admin@example.com" required>
+              </div>
+              <div class="col-12 text-end">
+                <button class="btn btn-primary"><i class="bi bi-save me-1"></i>Simpan</button>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+<script>
+/* ========= Dummy Data ========= */
+let LAPORAN = [
+  {
+    id:1, judul:'Jl. Pattimura, Kadia', pelapor:'@aldi', lokasi:'Kota Kendari', tgl:'28 Sep 2025',
+    status:'proses', severity:'Tinggi', lat:-3.9968, lng:122.5135,
+    foto:'assets/img/sample-crack.jpg',
+    dampak:'Macet parah pada jam sibuk; potensi kecelakaan karena lubang cukup dalam.'
+  },
+];
+
+let USERS = [
+  { id:1, username:'aldyansyah', email:'aldyansyah@gmail.com', tgl:'2025-07-12' },
+  { id:2, username:'kaltsum', email:'kaltsum@gmail.com', tgl:'2025-07-20' },
+  { id:3, username:'jumahir', email:'jumahir@gmail.com', tgl:'2025-08-02' }
+];
+
+const COLORS = { menunggu:'#ffc107', diverifikasi:'#7b61ff', proses:'#0d6efd', selesai:'#28a745', ditolak:'#dc3545' };
+
+/* ========= Router ========= */
+document.querySelectorAll('#nav .nav-link').forEach(a=>{
+  a.addEventListener('click', (e)=>{
+    e.preventDefault();
+    document.querySelectorAll('#nav .nav-link').forEach(n=>n.classList.remove('active'));
+    a.classList.add('active');
+    const v = a.dataset.view;
+    document.getElementById('pageTitle').textContent = a.textContent.trim();
+    document.querySelectorAll('.view').forEach(x=>x.classList.remove('active'));
+    document.getElementById('view-'+v).classList.add('active');
+    if(v==='dashboard'){ refreshKPI(); drawMarkers('all'); }
+    if(v==='verifikasi'){ renderVerifikasi(); }
+    if(v==='laporan'){ renderLaporan(); }
+    if(v==='pengguna'){ renderUsers(); }
+  });
+});
+
+/* ========= KPI + Donut ========= */
+let donutChart=null;
+function refreshKPI(){
+  const cnt = s => LAPORAN.filter(x=>x.status===s).length;
+  const total = LAPORAN.length;
+  const menunggu=cnt('menunggu'), diverifikasi=cnt('diverifikasi'), proses=cnt('proses'), selesai=cnt('selesai'), ditolak=cnt('ditolak');
+  document.getElementById('kpi-total').textContent = total;
+  document.getElementById('kpi-menunggu').textContent = menunggu;
+  document.getElementById('kpi-diverifikasi').textContent = diverifikasi;
+  document.getElementById('kpi-proses').textContent = proses;
+  document.getElementById('kpi-selesai').textContent = selesai;
+  document.getElementById('kpi-ditolak').textContent = ditolak;
+
+  const progress = total ? Math.round((selesai/total)*100) : 0;
+  document.getElementById('txt-progress').textContent = progress + '% selesai';
+
+  if(donutChart) donutChart.destroy();
+  donutChart = new Chart(document.getElementById('donut'), {
+    type:'doughnut',
+    data:{ labels:['Menunggu','Diverifikasi','Proses','Selesai','Ditolak'],
+      datasets:[{ data:[menunggu,diverifikasi,proses,selesai,ditolak], backgroundColor:Object.values(COLORS), borderWidth:0 }]},
+    options:{ cutout:'70%', plugins:{ legend:{display:false},
+      datalabels:{ formatter:(v,ctx)=>{ const a=ctx.dataset.data, s=a.reduce((m,n)=>m+n,0); return s?Math.round(v/s*100)+'%':''; }, color:'#fff', font:{weight:'bold',size:11}} }},
+    plugins:[ChartDataLabels]
+  });
+}
+
+/* ========= Map ========= */
+const map = L.map('map').setView([-3.988,122.512],12.6);
+L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',{ attribution:'© OpenStreetMap' }).addTo(map);
+let markers=[];
+function drawMarkers(filter='all'){
+  markers.forEach(m=>map.removeLayer(m)); markers=[];
+  LAPORAN.filter(r=>filter==='all'||r.status===filter).forEach(r=>{
+    const m=L.circleMarker([r.lat,r.lng],{radius:7,fillColor:COLORS[r.status],color:COLORS[r.status],fillOpacity:.9})
+      .bindPopup(`<strong>${r.judul}</strong><br>Status: ${r.status}<br>${r.tgl}`);
+    m.addTo(map); markers.push(m);
+  });
+}
+document.getElementById('mapFilter').addEventListener('click', e=>{
+  const b=e.target.closest('button'); if(!b) return;
+  document.querySelectorAll('#mapFilter .btn').forEach(x=>x.classList.remove('active'));
+  b.classList.add('active');
+  drawMarkers(b.dataset.filter);
+});
+
+/* ========= Verifikasi ========= */
+function badge(status){
+  const s=status.toLowerCase();
+  if(s==='menunggu') return `<span class="badge badge-status badge-menunggu">Menunggu</span>`;
+  if(s==='diverifikasi') return `<span class="badge badge-status badge-diverifikasi">Diverifikasi</span>`;
+  if(s==='proses') return `<span class="badge badge-status badge-proses">Proses</span>`;
+  if(s==='selesai') return `<span class="badge badge-status badge-selesai">Selesai</span>`;
+  if(s==='ditolak') return `<span class="badge badge-status badge-ditolak">Ditolak</span>`;
+  return `<span class="badge text-bg-secondary">-</span>`;
+}
+function renderVerifikasi(){
+  const tb=document.getElementById('tb-verifikasi'); tb.innerHTML='';
+  LAPORAN.forEach((r,i)=>{
+    tb.insertAdjacentHTML('beforeend', `
+      <tr>
+        <td>${i+1}</td>
+        <td>${r.judul}</td>
+        <td>${r.tgl}</td>
+        <td>${badge(r.status)}</td>
+        <td>${r.severity}</td>
+        <td class="d-flex gap-2">
+          <select class="form-select form-select-sm" data-id="${r.id}">
+            ${['menunggu','diverifikasi','proses','selesai','ditolak'].map(s=>`<option value="${s}" ${s===r.status?'selected':''}>${s.charAt(0).toUpperCase()+s.slice(1)}</option>`).join('')}
+          </select>
+          <button class="btn btn-sm btn-primary btn-save" data-id="${r.id}"><i class="bi bi-save"></i></button>
+        </td>
+      </tr>
+    `);
+  });
+  document.querySelectorAll('.btn-save').forEach(btn=>{
+    btn.addEventListener('click', ()=>{
+      const id=+btn.dataset.id;
+      const sel=document.querySelector(`select[data-id="${id}"]`);
+      const idx=LAPORAN.findIndex(x=>x.id===id);
+      LAPORAN[idx].status = sel.value;
+      // TODO: fetch PATCH /api/laporan/:id {status: sel.value}
+      refreshKPI(); drawMarkers(document.querySelector('#mapFilter .btn.active').dataset.filter);
+      renderVerifikasi(); // refresh badge
+    });
+  });
+}
+
+/* ========= Laporan (detail 1 data) ========= */
+function badgeStatusHTML(status){
+  const s=String(status||'').toLowerCase();
+  if(s==='menunggu')     return '<span class="badge badge-status badge-menunggu">Menunggu</span>';
+  if(s==='diverifikasi') return '<span class="badge badge-status badge-diverifikasi">Diverifikasi</span>';
+  if(s==='proses')       return '<span class="badge badge-status badge-proses">Proses</span>';
+  if(s==='selesai')      return '<span class="badge badge-status badge-selesai">Selesai</span>';
+  if(s==='ditolak')      return '<span class="badge badge-status badge-ditolak">Ditolak</span>';
+  return '<span class="badge text-bg-secondary">-</span>';
+}
+function severityBadgeText(sev){
+  const s=String(sev||'').toLowerCase();
+  if(s==='tinggi') return '<span class="badge text-bg-danger">Tinggi</span>';
+  if(s==='sedang') return '<span class="badge text-bg-warning">Sedang</span>';
+  if(s==='rendah') return '<span class="badge text-bg-info">Rendah</span>';
+  return '<span class="badge text-bg-secondary">-</span>';
+}
+function renderLaporan(){
+  const r = LAPORAN[0]; // tampilkan satu data; backend nanti yang tentukan
+  const detail = document.getElementById('laporanDetail');
+  if(!r){ detail.innerHTML='<div class="text-secondary">Belum ada data.</div>'; return; }
+
+  const elFoto=document.getElementById('lp-foto');
+  const elJudul=document.getElementById('lp-judul');
+  const elMeta=document.getElementById('lp-meta');
+  const elDampak=document.getElementById('lp-dampak');
+  const elMap=document.getElementById('lp-map');
+
+  elFoto.src = r.foto || 'https://placehold.co/800x500?text=Foto+Laporan';
+  elFoto.alt = r.judul || 'Foto laporan';
+  elJudul.textContent = r.judul || '-';
+  elMeta.textContent = `${r.pelapor || '-'} • ${r.lokasi || '-'} • ${r.tgl || '-'}`;
+  document.getElementById('lp-status').outerHTML = badgeStatusHTML(r.status);
+  document.getElementById('lp-severity').outerHTML = severityBadgeText(r.severity);
+  elDampak.textContent = r.dampak || '-';
+
+  if(typeof r.lat==='number' && typeof r.lng==='number'){
+    elMap.href=`https://www.google.com/maps?q=${r.lat},${r.lng}`; elMap.classList.remove('disabled');
+  } else { elMap.href='javascript:void(0)'; elMap.classList.add('disabled'); }
+}
+
+/* ========= Users ========= */
+function renderUsers(){
+  const tb=document.getElementById('tb-users'); tb.innerHTML='';
+  USERS.forEach((u,i)=>{
+    tb.insertAdjacentHTML('beforeend', `
+      <tr>
+        <td>${i+1}</td><td>${u.username}</td><td>${u.email}</td><td>${u.tgl}</td>
+        <td><button class="btn btn-sm btn-outline-danger" data-id="${u.id}"><i class="bi bi-trash"></i></button></td>
+      </tr>
+    `);
+  });
+  tb.querySelectorAll('button').forEach(b=>{
+    b.addEventListener('click', ()=>{
+      if(confirm('Hapus akun ini?')){ USERS = USERS.filter(x=>x.id!=b.dataset.id); renderUsers(); }
+      // TODO: fetch DELETE /api/users/:id
+    });
+  });
+}
+
+/* ========= Profil ========= */
+document.getElementById('formProfile').addEventListener('submit', (e)=>{
+  e.preventDefault();
+  const u=document.getElementById('inpUsername').value.trim();
+  const em=document.getElementById('inpEmail').value.trim();
+  if(!u || !em) return;
+  document.getElementById('pf-username').textContent=u;
+  document.getElementById('pf-email').textContent=em;
+  // TODO: fetch PATCH /api/me {username:u, email:em}
+  alert('Profil admin diperbarui (dummy).');
+});
+
+/* ========= Init ========= */
+refreshKPI(); drawMarkers('all'); renderVerifikasi(); // render awal
+</script>
+</body>
+</html>

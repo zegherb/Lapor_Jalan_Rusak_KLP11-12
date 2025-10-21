@@ -1,0 +1,116 @@
+<!doctype html>
+<html lang="id">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Profil Pengguna — LAJARUS</title>
+
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" rel="stylesheet">
+
+  <style>
+    :root { --soft:#f5f7fb; }
+    body{ background:var(--soft); }
+    .page-header{ display:flex; justify-content:space-between; align-items:center; margin-bottom:16px; }
+    .mini{ font-size:12px; color:#6c757d; }
+  </style>
+</head>
+<body>
+  <main class="container py-4">
+    <!-- Header -->
+    <div class="page-header">
+      <h4 class="mb-0">Profil</h4>
+      <div class="d-flex align-items-center gap-2">
+        <a class="btn btn-outline-secondary btn-sm" href="dashboard.html"><i class="bi bi-arrow-left"></i> Kembali</a>
+      </div>
+    </div>
+
+    <div class="row g-3">
+      <!-- Kartu avatar/info -->
+      <div class="col-md-4">
+        <div class="card h-100">
+          <div class="card-body text-center">
+            <img src="https://i.pravatar.cc/180?img=5" class="rounded-circle mb-3" width="110" height="110" alt="avatar">
+            <h5 class="mb-0" id="pf-username">user_lajarus</h5>
+            <div class="mini" id="pf-email">user@example.com</div>
+            <hr>
+            <div class="mini">Dashboard • Riwayat • Profil</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Form ubah (username saja) -->
+      <div class="col-md-8">
+        <div class="card">
+          <div class="card-header bg-white fw-semibold">Ubah Profil</div>
+          <div class="card-body">
+            <form id="formProfile" class="row g-3">
+              <div class="col-md-6">
+                <label class="form-label">Username</label>
+                <input type="text" class="form-control" id="inpUsername" value="user_lajarus" required>
+                <div class="form-text">Nama yang tampil di aplikasi.</div>
+              </div>
+              <div class="col-md-6">
+                <label class="form-label">Email (Gmail)</label>
+                <input type="email" class="form-control" id="inpEmail" value="user@example.com" disabled>
+                <div class="form-text">Email tidak dapat diubah.</div>
+              </div>
+              <div class="col-12 d-flex justify-content-end">
+                <button class="btn btn-primary"><i class="bi bi-save me-1"></i>Simpan Perubahan</button>
+              </div>
+            </form>
+          </div>
+        </div>
+
+        <!-- (Opsional) Kartu kecil info keamanan -->
+        <div class="card mt-3">
+          <div class="card-body d-flex align-items-center gap-2">
+            <i class="bi bi-shield-lock text-primary"></i>
+            <div class="mini">
+              Untuk mengubah email, hubungi admin atau gunakan menu pemulihan akun di aplikasi.
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+  <script>
+    // Data awal (bisa diganti dari backend)
+    const INITIAL = {
+      username: 'user_lajarus',
+      email: 'user@example.com'
+    };
+
+    // isi tampilan awal
+    document.getElementById('pf-username').textContent = INITIAL.username;
+    document.getElementById('pf-email').textContent = INITIAL.email;
+    document.getElementById('inpUsername').value = INITIAL.username;
+    document.getElementById('inpEmail').value = INITIAL.email;
+
+    // simpan (hanya username)
+    document.getElementById('formProfile').addEventListener('submit', async (e)=>{
+      e.preventDefault();
+      const newUsername = document.getElementById('inpUsername').value.trim();
+      if(!newUsername){ return; }
+
+      // TODO: ganti dengan request ke backend kamu
+      // contoh:
+      // await fetch('/api/me', { method:'PATCH', headers:{'Content-Type':'application/json'},
+      //   body: JSON.stringify({ username: newUsername }) });
+
+      document.getElementById('pf-username').textContent = newUsername;
+
+      // notifikasi sederhana
+      const toast = document.createElement('div');
+      toast.className = 'toast align-items-center text-bg-success position-fixed bottom-0 end-0 m-3';
+      toast.role = 'alert'; toast.ariaLive = 'assertive'; toast.ariaAtomic = 'true';
+      toast.innerHTML = `<div class="d-flex"><div class="toast-body">Username diperbarui.</div>
+        <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast"></button></div>`;
+      document.body.appendChild(toast);
+      new bootstrap.Toast(toast).show();
+    });
+  </script>
+</body>
+</html>

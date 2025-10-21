@@ -262,6 +262,11 @@ footer a:hover {
   border: 1px solid #cbead4;
 }
 
+.ljr-badge-diverifikasi {
+  background: #e7d9ff;
+  color: #5a2bbf;
+}
+
 .ljr-btn-detail {
   font-weight: 600;
   border-radius: 10px;

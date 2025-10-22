@@ -10,14 +10,14 @@ Aplikasi untuk melaporkan jalan rusak di wilayah pengguna. Pengguna dapat mengir
 - Panel admin untuk mengubah status laporan (baru / diproses / selesai)
 - Notifikasi status (opsional)
 
-## Teknologi (sesuaikan)
-- Frontend: HTML/CSS/JavaScript / React / Vue / Flutter
-- Backend: Node.js / Express / Django / Flask / Laravel
-- Database: PostgreSQL / MySQL / SQLite / MongoDB
-- Penyimpanan file: Local / AWS S3 / Firebase Storage
-- Peta: Leaflet / Google Maps / Mapbox
+## Teknologi
+- Frontend: HTML/CSS/JavaScript 
+- Backend: Node.js / Express 
+- Database: MySQL / 
+- Penyimpanan file: Local
+- Peta: Leaflet 
 
-## Instalasi (contoh Node.js)
+## Instalasi 
 1. Clone repositori
     ```
     git clone <repo-url>
@@ -28,35 +28,9 @@ Aplikasi untuk melaporkan jalan rusak di wilayah pengguna. Pengguna dapat mengir
     npm install
     ```
 3. Konfigurasi environment
-    - Salin `.env.example` ke `.env` dan isi variabel (database, storage, API keys)
+    - Salin `.env.example` ke `.env` dan isi variabel (database, storage)
 4. Jalankan aplikasi
     ```
-    npm run dev
+    node app
     ```
-Ubah langkah di atas sesuai stack yang digunakan.
 
-## Struktur proyek (contoh)
-- /src — kode sumber frontend/backend
-- /public — aset statis
-- /migrations — migrasi database
-- /docs — dokumentasi tambahan
-
-## Cara pakai
-- Buka aplikasi di browser atau jalankan APK (jika mobile)
-- Pilih "Buat Laporan" → isi deskripsi → ambil/unggah foto → tambahkan lokasi → kirim
-- Admin: buka panel admin → tinjau laporan → ubah status
-
-## Kontribusi
-1. Fork repositori
-2. Buat branch fitur: `git checkout -b fitur/nama-fitur`
-3. Commit perubahan: `git commit -m "Deskripsi singkat"`
-4. Push dan buat Pull Request
-
-## Lisensi
-Tentukan lisensi proyek (mis. MIT). Contoh:
-```
-MIT License
-```
-
-## Catatan
-Sesuaikan README ini dengan detail implementasi (endpoints API, diagram database, environment variables) saat fitur dan arsitektur final sudah ditentukan.

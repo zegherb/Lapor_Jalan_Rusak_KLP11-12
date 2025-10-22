@@ -10,7 +10,7 @@ dotenv.config()
 
 // =================== REGISTER ===================
 export const getRegister = async (req, res) => {
-    res.render("auth/register", { errors: req.flash("errors"), oldinput: {} })
+    res.render("auth/register", { errors: req.flash("errors") })
 }
 
 export const register = async (req, res) => {
@@ -30,17 +30,16 @@ export const register = async (req, res) => {
     try {
         // cek email
         const cekEmail = await User.findOne({ where: { email } })
-        if (cekEmail) 
-        {
+        if (cekEmail) {
             res.status(404)
-            req.flash("errors",["Email sudah digunakan silahkan login"])
+            req.flash("errors", ["Email sudah digunakan silahkan login"])
             return res.redirect('/register')
         }
 
         // hash password
         const hashedPassword = await bcrypt.hash(password, 10)
 
-        // menambahkan data baru ke databse
+        // tambahkan data baru ke databse
         const user = await User.create({
             nama: username,
             email,
@@ -98,7 +97,7 @@ export const login = async (req, res) => {
         const cekPass = await bcrypt.compare(password, account.password)
         if (!cekPass) {
             res.status(400)
-            req.flash("errors", ["password salah"])
+            req.flash("errors", ["Masukkan password yang benar!"])
             return res.redirect("/login")
         }
 
@@ -124,7 +123,6 @@ export const login = async (req, res) => {
         res.redirect("/login");
     }
 }
-
 
 // Logout: hapus cookie
 export const logout = (req, res) => {

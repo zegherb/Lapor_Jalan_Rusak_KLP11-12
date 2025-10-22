@@ -6,7 +6,8 @@ import session from "express-session";
 import flash from "connect-flash";
 import cookieParser from "cookie-parser";
 import { populateUser } from "./middlewares/authMiddleware.js";
-import home from './routes/dashboard.js'
+import dashboard from './routes/dashboard.js'
+import forgotPassword from './routes/reset.js'
 
 dotenv.config()
 
@@ -43,40 +44,22 @@ app.use(populateUser)
 app.use(flash())
 
 // routes
-app.use('/',home)
+app.use('/',dashboard)
 app.use('/', authRoutes)
 app.use('/api/auth', authRoutes)
+app.use('/auth',authRoutes)
+app.use('/reset/',forgotPassword)
+app.use('/api/reset',forgotPassword)
 
-
-// app.get("/dashboard",(req,res)=>{
-//     res.render("dashboard")
-//     // res.send("hello world")
-// })
-
-// app.get("/history",(req,res)=>{
-//     res.render("history")
-// })
-
+// routes ke halaman depan
 app.get("/home", (req, res) => {
     res.render("index")
 })
 
-// app.get("/login",(req,res)=>{
-//     res.render("auth/login")
-// })
-
-// app.get("/register",(req,res)=>{
-//     res.render("auth/register")
-// })
-
-// app.get("/auth/passwordforgot",(req,res)=>{
-//     res.render("auth/forgot_password")
-// })
-
-// app.get("/auth/passwordreset",(req,res)=>{
-//     res.render("auth/reset_password")
-// })
-
+// masuk ke halaman 404
+app.use("/",(req, res) => {
+    res.render("404")}
+)
 
 app.listen(PORT, () => {
     console.log(`app listening at http//:localhost:${PORT}`)

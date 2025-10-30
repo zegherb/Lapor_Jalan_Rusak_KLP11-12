@@ -22,7 +22,7 @@ export const requireAuth = (req, res, next) => {
         // token invalid / expired
         if (req.accepts("html")) {
             req.flash("errors", ["Sesi berakhir, silakan login ulang"]);
-            return res.redirect("/auth/login");
+            return res.redirect("/login");
         }
         return res.status(401).json({ message: "Invalid token" });
     }

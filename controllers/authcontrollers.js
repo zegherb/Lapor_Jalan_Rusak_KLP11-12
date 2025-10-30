@@ -116,7 +116,10 @@ export const login = async (req, res) => {
         })
 
         // setelah berhasil login masuk ke dashboard
-        return res.redirect("/dashboard")
+        if (role === 'admin') {
+            return res.redirect('/admin');
+        }
+        return res.redirect('/dashboard');
 
     } catch (err) {
         req.flash("errors", [err.message]);

@@ -7,6 +7,11 @@ const router = express.Router();
 
 // halaman user dashboard (harus login)
 router.get("/dashboard", requireAuth, async (req, res) => {
+    if(req.user.role === "admin"){
+        res.redirect("/admin")
+        return
+    }
+
     // req.user tersedia karena requireAuth mem-verify token
     const userId = req.user.id;
 
@@ -16,11 +21,13 @@ router.get("/dashboard", requireAuth, async (req, res) => {
     res.render("dashboard", { reports });
 });
 
+
+
 // halaman admin dashboard (harus login & role admin)
 router.get("/admin", requireAuth, requireAdmin, async (req, res) => {
     // admin halaman, tampilkan semua laporan
     const allReports = await Laporan.findAll({ include: ["User", "Admin"] });
-    res.render("admin-dashboard", { reports: allReports });
+    res.render("admin", { reports: allReports });
 });
 
 export default router;

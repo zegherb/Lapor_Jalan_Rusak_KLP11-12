@@ -7,6 +7,7 @@ import flash from "connect-flash";
 import cookieParser from "cookie-parser";
 import { populateUser } from "./middlewares/authMiddleware.js";
 import dashboard from './routes/dashboard.js'
+import tambahLaporan from './routes/laporan.js'
 import forgotPassword from './routes/reset.js'
 
 dotenv.config()
@@ -14,7 +15,6 @@ dotenv.config()
 
 const app = express()
 const PORT = process.env.PORT
-
 
 // TES koneksi ke database
 sequelize.authenticate()
@@ -46,6 +46,7 @@ app.use(flash())
 // routes
 app.use('/',dashboard)
 app.use('/', authRoutes)
+app.use('/dashboard',tambahLaporan)
 app.use('/api/auth', authRoutes)
 app.use('/auth',authRoutes)
 app.use('/reset/',forgotPassword)

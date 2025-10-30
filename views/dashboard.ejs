@@ -34,7 +34,9 @@
       <div>
         <h4 class="mb-0">Selamat Datang,
           <% if (user) { %>
-            <span> <%= user.username %> </span>
+            <span>
+              <%= user.username %>
+            </span>
             <% } %>
               <span class="ms-1">👋</span>
         </h4>
@@ -86,7 +88,7 @@
           <div class="card-body">
             <h6 class="card-title">Aksi Cepat</h6>
             <div class="d-grid gap-2">
-              <a href="/reports" class="btn btn-rr"><i class="bi bi-plus-lg me-1"></i> Buat Laporan Baru</a>
+              <a href="dashboard/reports" class="btn btn-rr"><i class="bi bi-plus-lg me-1"></i> Buat Laporan Baru</a>
               <a href="/history" class="btn btn-outline-secondary"><i class="bi bi-clock-history me-1"></i> Lihat Semua
                 Riwayat</a>
             </div>
@@ -101,10 +103,11 @@
             <a href="#" class="small text-muted">Lihat Semua <i class="bi bi-arrow-right"></i></a>
           </div>
           <div class="card-body">
-              <!-- render semua laporan nanti itu disini -->
-               
+            <!-- render semua laporan nanti itu disini -->
+
             <div class="text-center">
-              <a href="#" class="btn btn-outline-secondary"><i class="bi bi-plus-lg me-1"></i> Tambah Laporan Baru</a>
+              <a href="dashboard/reports" class="btn btn-outline-secondary"><i class="bi bi-plus-lg me-1"></i> Tambah
+                Laporan Baru</a>
             </div>
           </div>
         </div>

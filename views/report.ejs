@@ -1,0 +1,439 @@
+<!doctype html>
+<html lang="id">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Buat Laporan Baru – LAJARUS</title>
+
+  <!-- Bootstrap 5 -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <!-- Bootstrap Icons -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" rel="stylesheet">
+  <!-- Leaflet (peta) -->
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+
+  <style>
+    body {
+      background: #f5f7fb;
+    }
+
+    .app-header {
+      background: #2b2f33;
+      color: #fff;
+    }
+
+    .content-card {
+      border-radius: 14px;
+      box-shadow: 0 8px 24px rgba(0, 0, 0, .08);
+    }
+
+    .step-dot {
+      width: 28px;
+      height: 28px;
+      border-radius: 50%;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      background: #f1f3f5;
+      font-weight: 600;
+      color: #6c757d;
+    }
+
+    .step-dot.active {
+      background: #ffe08a;
+      color: #212529;
+    }
+
+    .progress {
+      height: 8px;
+    }
+
+    #map {
+      height: 280px;
+      border-radius: 12px;
+    }
+
+    .btn-primary-soft {
+      background: linear-gradient(90deg, #ffe08a, #ffd66b);
+      color: #6b4e00;
+      border: 0;
+    }
+
+    .btn-primary-soft:hover {
+      filter: brightness(0.98);
+    }
+
+    .link-muted {
+      color: #6c757d;
+      text-decoration: none;
+    }
+
+    .thumb {
+      width: 90px;
+      height: 90px;
+      object-fit: cover;
+      border-radius: 10px;
+      border: 1px solid #e9ecef;
+    }
+
+    .hidden {
+      display: none !important;
+    }
+  </style>
+</head>
+
+<body>
+  <!-- Header -->
+  <header class="app-header py-3">
+    <div class="container d-flex align-items-center gap-3">
+      <a class="text-white-50" href="/dashboard"><i class="bi bi-arrow-left fs-5"></i></a>
+      <div>
+        <div class="fw-semibold">Buat Laporan Baru</div>
+        <div class="small text-white-50">Langkah 1 dari 3</div>
+      </div>
+    </div>
+  </header>
+
+  <main class="container my-4">
+    <div class="row justify-content-center">
+      <div class="col-lg-8">
+        <!-- Progress & Stepper -->
+        <div class="content-card bg-white p-3 mb-3">
+          <div class="d-flex align-items-center gap-3">
+            <div class="flex-grow-1">
+              <div class="small text-muted mb-1">Progress Pengisian</div>
+              <div class="progress">
+                <div id="progressBar" class="progress-bar" role="progressbar" style="width:33%;" aria-valuenow="33"
+                  aria-valuemin="0" aria-valuemax="100"></div>
+              </div>
+            </div>
+            <div class="d-flex align-items-center gap-4 px-2">
+              <div class="text-center">
+                <div id="dot1" class="step-dot active">1</div>
+                <div class="small text-muted mt-1">Lokasi</div>
+              </div>
+              <div class="text-center">
+                <div id="dot2" class="step-dot">2</div>
+                <div class="small text-muted mt-1">Detail</div>
+              </div>
+              <div class="text-center">
+                <div id="dot3" class="step-dot">3</div>
+                <div class="small text-muted mt-1">Foto</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <% if (error) { %>
+          <p style="color:red;">
+            <%= error %>
+          </p>
+          <% } %>
+
+            <% if (success) { %>
+              <p style="color:green;">
+                <%= success %>
+              </p>
+              <% } %>
+
+                <!-- CARD FORM -->
+                <div class="content-card bg-white p-4">
+
+                  <!-- STEP 1: Lokasi -->
+                  <form action="api/reports/add" method="POST" enctype="multipart/form-data">
+                    <section id="step1">
+                      <h5 class="mb-3">Lokasi Kerusakan Jalan</h5>
+                      <p class="text-muted small mb-4">Masukkan alamat atau tandai lokasi kerusakan jalan dengan detail.
+                      </p>
+
+                      <div class="mb-3">
+                        <label class="form-label">Alamat Lengkap</label>
+                        <div class="input-group">
+                          <span class="input-group-text"><i class="bi bi-geo-alt"></i></span>
+                          <input type="text" class="form-control" id="alamat" name="alamat"
+                            placeholder="Contoh: Jl. Pattimura, Kadia, Kendari" required>
+                        </div>
+                      </div>
+
+                      <div class="mb-2">
+                        <label class="form-label">Tandai di Peta</label>
+                        <div id="map"></div>
+                        <div class="form-text">Klik pada peta atau drag marker untuk memilih titik lokasi.</div>
+                      </div>
+
+                      <div class="row g-3 mt-1">
+                        <div class="col-sm-6">
+                          <label class="form-label">Koordinat Latitude</label>
+                          <input type="number" name="latitude" step="any" class="form-control" id="lat" placeholder="-3.9987">
+                        </div>
+                        <div class="col-sm-6">
+                          <label class="form-label">Koordinat Longitude</label>
+                          <input type="number" name="longitude" step="any" class="form-control" id="lng" placeholder="122.5123">
+                        </div>
+                        <div class="col-12">
+                          <div class="form-check">
+                            <input class="form-check-input" type="checkbox" id="useGPS">
+                            <label class="form-check-label" for="useGPS">
+                              Gunakan lokasi saya (GPS) bila tersedia
+                            </label>
+                          </div>
+                          <div class="small text-muted mt-1"><i class="bi bi-info-circle"></i> Koordinat membantu tim
+                            menemukan
+                            lokasi dengan akurat.</div>
+                        </div>
+                      </div>
+
+                      <div class="d-grid mt-4">
+                        <button type="button" class="btn btn-primary-soft py-2" id="toStep2">Lanjut ke Detail</button>
+                      </div>
+
+                      <div class="text-center mt-3">
+                        <a class="link-muted small" href="/dashboard">Batalkan dan Kembali</a>
+                      </div>
+                    </section>
+
+                    <!-- STEP 2: Detail -->
+                    <section id="step2" class="hidden">
+                      <h5 class="mb-3">Detail Laporan</h5>
+
+                      <div class="mb-3">
+                        <label class="form-label">Nama Pelapor</label>
+                        <input type="text" name="namaPelapor" class="form-control" id="nama" placeholder="Nama lengkap" required>
+                      </div>
+
+                      <div class="mb-3">
+                        <label class="form-label">Dampak Kerusakan</label>
+                        <select name="dampak" class="form-select" id="dampak">
+                          <option selected disabled value="">Pilih salah satu</option>
+                          <option value="Macet">Macet</option>
+                          <option value="Kecelakaan">Kecelakaan</option>
+                          <option value="Kerusakan Kendaraan">Kerusakan Kendaraan</option>
+                          <option value="Banjir Genangan">Banjir Genangan</option>
+                          <option value="Lainnya">Lainnya (tulis sendiri)</option>
+                        </select>
+                      </div>
+
+                      <div class="mb-3 hidden" id="dampakLainnyaWrap">
+                        <label class="form-label">Dampak Lainnya</label>
+                        <input type="text" class="form-control" id="dampakLainnya"
+                          placeholder="Tuliskan dampak yang dirasakan">
+                      </div>
+
+                      <div class="mb-3">
+                        <label class="form-label">Tingkat Kerusakan</label>
+                        <div class="row g-2">
+                          <div class="col-sm-4">
+                              <input type="radio" class="btn-check" name="tingkat" id="t-rendah" value="ringan"
+                                autocomplete="off">
+                              <label class="btn btn-outline-secondary w-100" for="t-rendah"><i
+                                  class="bi bi-thermometer-low me-1"></i>Rendah</label>
+                            </div>
+                            <div class="col-sm-4">
+                              <input type="radio" class="btn-check" name="tingkat" id="t-sedang" value="sedang"
+                                autocomplete="off">
+                              <label class="btn btn-outline-warning w-100" for="t-sedang"><i
+                                  class="bi bi-thermometer-half me-1"></i>Sedang</label>
+                            </div>
+                            <div class="col-sm-4">
+                              <input type="radio" class="btn-check" name="tingkat" id="t-tinggi" value="berat"
+                                autocomplete="off">
+                              <label class="btn btn-outline-danger w-100" for="t-tinggi"><i
+                                  class="bi bi-thermometer-high me-1"></i>Tinggi</label>
+                            </div>
+                        </div>
+                      </div>
+
+                      <div class="mb-3">
+                        <label class="form-label">Catatan Tambahan (opsional)</label>
+                        <textarea name="catatan" class="form-control" id="catatan" rows="3"
+                          placeholder="Contoh: Lubang cukup dalam, berada di dekat pertigaan."></textarea>
+                      </div>
+
+                      <div class="d-flex gap-2">
+                        <button class="btn btn-outline-secondary" id="backTo1"><i class="bi bi-chevron-left"></i>
+                          Kembali</button>
+                        <button class="btn btn-primary-soft ms-auto" id="toStep3">Lanjut ke Foto <i
+                            class="bi bi-chevron-right"></i></button>
+                      </div>
+                    </section>
+
+                    <!-- STEP 3: Foto -->
+                    <section id="step3" class="hidden">
+                      <h5 class="mb-3">Unggah Foto Kerusakan</h5>
+                      <p class="text-muted small">Unggah maksimal 3 foto. Disarankan foto dari jarak dekat & jauh.</p>
+
+                      <div class="mb-3">
+                        <input class="form-control" type="file" id="foto" name="foto" accept="image/*" multiple>
+                      </div>
+
+                      <div id="preview" class="d-flex flex-wrap gap-2 mb-3"></div>
+
+                      <div class="form-check mb-3">
+                        <input class="form-check-input" type="checkbox" id="konfirmasi" required>
+                        <label class="form-check-label" for="konfirmasi">
+                          Saya menyatakan data yang saya kirim benar adanya.
+                        </label>
+                      </div>
+
+                      <div class="d-flex gap-2">
+                        <button type="button" class="btn btn-outline-secondary" id="backTo2"><i class="bi bi-chevron-left"></i>
+                          Kembali</button>
+                        <a href="/dashboard.html"></a>
+                        <button class="btn btn-success ms-auto" type="submit" id="submitBtn"><i class="bi bi-send"></i>
+                          Kirim Laporan</button>
+                      </div>
+                    </section>
+                  </form>
+                </div>
+      </div>
+    </div>
+  </main>
+
+  <!-- Toast -->
+  <div class="position-fixed bottom-0 end-0 p-3" style="z-index:1080">
+    <div id="toastOK" class="toast align-items-center text-bg-success border-0" role="alert" aria-live="assertive"
+      aria-atomic="true">
+      <div class="d-flex">
+        <div class="toast-body">
+          Laporan berhasil disiapkan (dummy). Integrasikan ke backend sesuai kebutuhan.
+        </div>
+        <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast"></button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Scripts -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+  <script>
+    // ====== State Helper ======
+    const step1 = document.getElementById('step1');
+    const step2 = document.getElementById('step2');
+    const step3 = document.getElementById('step3');
+    const dots = [document.getElementById('dot1'), document.getElementById('dot2'), document.getElementById('dot3')];
+    const progressBar = document.getElementById('progressBar');
+
+    function showStep(n) {
+      [step1, step2, step3].forEach((s, i) => s.classList.toggle('hidden', i !== n - 1));
+      dots.forEach((d, i) => d.classList.toggle('active', i === n - 1));
+      const pct = n === 1 ? 33 : n === 2 ? 66 : 100;
+      progressBar.style.width = pct + '%';
+      progressBar.setAttribute('aria-valuenow', pct);
+      document.querySelector('.app-header .small').textContent = `Langkah ${n} dari 3`;
+    }
+
+    // ====== Leaflet Map ======
+    const defaultLatLng = [-3.9910, 122.5120]; // Kendari perkiraan
+    const map = L.map('map', { zoomControl: true }).setView(defaultLatLng, 13);
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+      attribution: '&copy; OpenStreetMap'
+    }).addTo(map);
+    let marker = L.marker(defaultLatLng, { draggable: true }).addTo(map);
+
+    const latInput = document.getElementById('lat');
+    const lngInput = document.getElementById('lng');
+
+    function setLatLng(latlng) {
+      marker.setLatLng(latlng);
+      latInput.value = latlng.lat.toFixed(6);
+      lngInput.value = latlng.lng.toFixed(6);
+    }
+    setLatLng(marker.getLatLng());
+
+    map.on('click', (e) => setLatLng(e.latlng));
+    marker.on('dragend', (e) => setLatLng(e.target.getLatLng()));
+
+    latInput.addEventListener('change', () => {
+      const lat = parseFloat(latInput.value), lng = parseFloat(lngInput.value);
+      if (!isNaN(lat) && !isNaN(lng)) { setLatLng({ lat, lng }); map.panTo([lat, lng]); }
+    });
+    lngInput.addEventListener('change', () => {
+      const lat = parseFloat(latInput.value), lng = parseFloat(lngInput.value);
+      if (!isNaN(lat) && !isNaN(lng)) { setLatLng({ lat, lng }); map.panTo([lat, lng]); }
+    });
+
+    // Gunakan GPS
+    document.getElementById('useGPS').addEventListener('change', function () {
+      if (this.checked && navigator.geolocation) {
+        navigator.geolocation.getCurrentPosition(pos => {
+          const lat = pos.coords.latitude, lng = pos.coords.longitude;
+          setLatLng({ lat, lng }); map.setView([lat, lng], 16);
+        }, () => { this.checked = false; alert('Tidak dapat mengakses GPS.'); });
+      }
+    });
+
+    // ====== Step Navigation ======
+    document.getElementById('toStep2').addEventListener('click', () => {
+      if (!document.getElementById('alamat').value.trim()) {
+        document.getElementById('alamat').focus(); return;
+      }
+      showStep(2);
+      setTimeout(() => map.invalidateSize(), 200); // jaga peta tetap ok saat kembali
+    });
+    document.getElementById('backTo1').addEventListener('click', () => showStep(1));
+    document.getElementById('toStep3').addEventListener('click', () => {
+      const nm = document.getElementById('nama').value.trim();
+      const tingkat = document.querySelector('input[name="tingkat"]:checked');
+      const dampakSel = document.getElementById('dampak').value;
+      const dampakLain = document.getElementById('dampakLainnya').value.trim();
+      if (!nm) { document.getElementById('nama').focus(); return; }
+      if (!dampakSel) { document.getElementById('dampak').focus(); return; }
+      if (dampakSel === 'Lainnya' && !dampakLain) { document.getElementById('dampakLainnya').focus(); return; }
+      if (!tingkat) { alert('Pilih tingkat kerusakan.'); return; }
+      showStep(3);
+    });
+    document.getElementById('backTo2').addEventListener('click', () => showStep(2));
+
+    // ====== Dampak Lainnya Toggle ======
+    const dampak = document.getElementById('dampak');
+    const dampakLainnyaWrap = document.getElementById('dampakLainnyaWrap');
+    dampak.addEventListener('change', () => {
+      dampakLainnyaWrap.classList.toggle('hidden', dampak.value !== 'Lainnya');
+    });
+
+    // ====== Upload Preview ======
+    const fotoInput = document.getElementById('foto');
+    const preview = document.getElementById('preview');
+
+    fotoInput.addEventListener('change', () => {
+      preview.innerHTML = '';
+      const files = Array.from(fotoInput.files).slice(0, 3); // max 3
+      files.forEach(file => {
+        const reader = new FileReader();
+        reader.onload = e => {
+          const img = document.createElement('img');
+          img.src = e.target.result; img.className = 'thumb';
+          preview.appendChild(img);
+        };
+        reader.readAsDataURL(file);
+      });
+    });
+
+    // ====== Submit (dummy) ======
+    document.getElementById('submitBtn').addEventListener('click', () => {
+      if (!document.getElementById('konfirmasi').checked) {
+        alert('Mohon centang pernyataan kebenaran data.'); return;
+      }
+      // Kumpulkan data (contoh)
+      const payload = {
+        alamat: document.getElementById('alamat').value.trim(),
+        lat: parseFloat(latInput.value),
+        lng: parseFloat(lngInput.value),
+        nama: document.getElementById('nama').value.trim(),
+        dampak: dampak.value === 'Lainnya' ? document.getElementById('dampakLainnya').value.trim() : dampak.value,
+        tingkat: document.querySelector('input[name="tingkat"]:checked')?.value,
+        catatan: document.getElementById('catatan').value.trim()
+      };
+      console.log('Payload siap dikirim:', payload);
+      // Tampilkan toast sukses
+      const toast = new bootstrap.Toast(document.getElementById('toastOK'));
+      toast.show();
+    });
+
+    // Invalidate map when switching section
+    document.addEventListener('shown.bs.toast', () => map.invalidateSize());
+  </script>
+</body>
+
+</html>

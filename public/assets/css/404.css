@@ -1,0 +1,88 @@
+/* 404.css */
+:root {
+    --primary-yellow: #FACC15;
+    --black: #000000;
+    --soft-gray: #D1D5DB;
+}
+
+body {
+    font-family: 'Poppins', sans-serif;
+    background-color: #f8f9fa;
+    color: var(--black);
+    overflow-x: hidden;
+}
+
+/* Animasi Fade-in */
+.fade-in {
+    animation: fadeIn 1s ease-in-out;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Animasi Floating */
+.floating {
+    animation: floating 6s ease-in-out infinite;
+}
+
+@keyframes floating {
+    0% {
+        transform: translateY(0px);
+    }
+    50% {
+        transform: translateY(-15px);
+    }
+    100% {
+        transform: translateY(0px);
+    }
+}
+
+/* Animasi Satelit */
+.satellite {
+    animation: orbit 8s linear infinite;
+    transform-origin: 220px 100px;
+}
+
+@keyframes orbit {
+    from {
+        transform: rotate(0deg);
+    }
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+/* Tombol Custom */
+.btn-warning {
+    background-color: var(--primary-yellow);
+    border-color: var(--primary-yellow);
+    color: var(--black);
+    transition: all 0.3s ease;
+}
+
+.btn-warning:hover {
+    background-color: #e6b800;
+    border-color: #e6b800;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1) !important;
+}
+
+/* Responsive adjustments */
+@media (max-width: 576px) {
+    .display-1 {
+        font-size: 3.5rem;
+    }
+    
+    .illustration-container svg {
+        width: 250px;
+        height: 150px;
+    }
+}

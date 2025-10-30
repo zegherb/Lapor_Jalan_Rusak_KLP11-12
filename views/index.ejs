@@ -1,0 +1,231 @@
+<!doctype html>
+<html lang="id">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>LAJARUS – Lapor Jalan Rusak</title>
+  <link rel="stylesheet" href="/bootstrap/css/bootstrap.min.css">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" rel="stylesheet">
+  <link rel="stylesheet" href="../assets/css/style.css">
+</head>
+<body class="with-fixed-nav">
+
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
+  <div class="container">
+    <a class="navbar-brand fw-semibold" href="home"><i class="bi bi-geo-alt"></i>LAJARUS</a>
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
+      aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarNav">
+      <ul class="navbar-nav ms-auto mb-2 mb-lg-0 align-items-lg-center">
+        <li class="nav-item"><a class="nav-link" href="#fitur">Fitur</a></li>
+        <li class="nav-item"><a class="nav-link" href="/login">Masuk</a></li>
+        <li class="nav-item ms-lg-2">
+          <a class="btn btn-sm btn-rr" href="/register">Daftar</a>
+        </li>
+      </ul>
+    </div>
+  </div>
+</nav>
+
+<header class="hero py-5">
+  <div class="container hero-content py-5">
+    <div class="row align-items-center gy-5">
+      <div class="col-lg-7">
+        <span class="badge badge-soft rounded-pill px-3 py-2 mb-3">
+          <i class="bi bi-shield-check me-1"></i> Platform Pelaporan Terpercaya
+        </span>
+        <h1 class="display-4 fw-bold mb-3">Lapor Jalan Rusak <br> di Kota Kendari</h1>
+        <p class="lead text-opacity-75 mb-4" style="max-width:46ch;">Bantu Pemerintah memperbaiki infrastruktur jalan dengan lebih cepat. Lapor kerusakan dalam hitungan menit.</p>
+        <div class="d-flex flex-wrap gap-3 mb-5">
+          <a href="/dashboard" class="btn btn-rr btn-lg">Mulai Sekarang <i class="bi bi-arrow-right ms-1"></i></a>
+          <a href="#fitur" class="btn btn-ghost btn-lg">Pelajari Lebih Lanjut</a>
+        </div>
+      </div>
+      <!-- <div class="col-lg-5">
+        <div class="glass-card p-4 p-md-5">
+          <div class="d-flex align-items-center gap-3 mb-4">
+            <div class="glass-chip"><i class="bi bi-geo-alt-fill"></i></div>
+            <div class="text-white-50 small">Masukkan lokasi & deskripsi singkat kerusakan…</div>
+          </div>
+          <div class="bg-white bg-opacity-10 rounded-3 mb-3" style="height:10px;"></div>
+          <div class="bg-white bg-opacity-10 rounded-3 mb-3" style="height:10px; width:90%;"></div>
+          <div class="bg-white bg-opacity-10 rounded-3 mb-4" style="height:10px; width:75%;"></div>
+          <div class="d-flex align-items-center gap-3">
+            <div class="flex-grow-1 bg-white bg-opacity-10 rounded-pill" style="height:16px;"></div>
+            <div class="glass-chip" style="width:36px;height:36px;"><i class="bi bi-arrow-right"></i></div>
+          </div>
+        </div>
+      </div> -->
+    </div>
+    <div class="text-center pt-5">
+      <i class="bi bi-chevron-down text-white-50 fs-4"></i>
+    </div>
+  </div>
+</header>
+
+<section id="fitur" class="section-muted py-5">
+  <div class="container">
+    <div class="text-center mb-4">
+      <span class="badge rounded-pill px-3 py-2" style="background:#efe7d0;color:#7a5d1a;border:1px solid #eadcb7;">
+        <i class="bi bi-stars me-1"></i> Fitur Unggulan
+      </span>
+    </div>
+    <h2 class="h3 text-center fw-bold mb-2">Kenapa Memilih LAJARUS?</h2>
+    <p class="text-center text-muted mb-5">Pelaporan dan monitoring kerusakan infrastruktur jalan yang mudah dan transparan</p>
+    <div class="row g-4">
+      <div class="col-12 col-md-6 col-lg-3">
+        <div class="card-feature p-4 h-100">
+          <div class="icon-soft mb-3"><i class="bi bi-lightning-charge"></i></div>
+          <h5 class="fw-semibold mb-2">Lapor Instan</h5>
+          <p class="text-muted mb-0">Form sederhana dan mudah</p>
+        </div>
+      </div>
+      <div class="col-12 col-md-6 col-lg-3">
+        <div class="card-feature p-4 h-100">
+          <div class="icon-soft mb-3" style="background:#e8f1ff; color:#1d4ed8;"><i class="bi bi-geo-alt"></i></div>
+          <h5 class="fw-semibold mb-2">GPS</h5>
+          <p class="text-muted mb-0">Lokasi presisi</p>
+        </div>
+      </div>
+      <div class="col-12 col-md-6 col-lg-3">
+        <div class="card-feature p-4 h-100">
+          <div class="icon-soft mb-3" style="background:#e9fff3; color:#16a34a;"><i class="bi bi-bell"></i></div>
+          <h5 class="fw-semibold mb-2">Update</h5>
+          <p class="text-muted mb-0">Update status perbaikan</p>
+        </div>
+      </div>
+      <div class="col-12 col-md-6 col-lg-3">
+        <div class="card-feature p-4 h-100">
+          <div class="icon-soft mb-3" style="background:#f3e8ff; color:#7c3aed;"><i class="bi bi-arrow-repeat"></i></div>
+          <h5 class="fw-semibold mb-2">Tracking</h5>
+          <p class="text-muted mb-0">Pantau progres laporan</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="py-5">
+  <div class="container">
+    <div class="band p-5 p-lg-5">
+      <div class="row text-center text-lg-start gy-4">
+        <div class="col-lg-4">
+          <div class="d-flex flex-column align-items-center align-items-lg-start gap-2">
+            <div class="glass-chip"><i class="bi bi-shield-check"></i></div>
+            <h5 class="mb-1">Aman & Terpercaya</h5>
+            <p class="text-white-50 mb-0">Data terenkripsi</p>
+          </div>
+        </div>
+        <div class="col-lg-4">
+          <div class="d-flex flex-column align-items-center align-items-lg-start gap-2">
+            <div class="glass-chip"><i class="bi bi-lightning-charge"></i></div>
+            <h5 class="mb-1">Respon Cepat</h5>
+            <p class="text-white-50 mb-0">Maksimal 24 jam</p>
+          </div>
+        </div>
+        <div class="col-lg-4">
+          <div class="d-flex flex-column align-items-center align-items-lg-start gap-2">
+            <div class="glass-chip"><i class="bi bi-people"></i></div>
+            <h5 class="mb-1">Kolaboratif</h5>
+            <p class="text-white-50 mb-0">Komunitas peduli jalan</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section-muted py-5">
+  <div class="container">
+    <div class="text-center mb-4">
+      <h3 class="fw-bold">Siap Berkontribusi?</h3>
+      <p class="text-muted">Bergabunglah dengan kami untuk mewujudkan kota dan komunitas yang berkelanjutan</p>
+      <a href="auth/register" class="btn btn-rr btn-lg mt-2">Daftar Gratis Sekarang <i class="bi bi-arrow-right ms-1"></i></a>
+    </div>
+    <div class="row text-center gy-4 mt-4">
+      <div class="col-6 col-md-3"><h3 class="fw-bold">100%</h3><p class="mb-0 text-muted">Gratis</p></div>
+      <div class="col-6 col-md-3"><h3 class="fw-bold">24/7</h3><p class="mb-0 text-muted">Support</p></div>
+      <div class="col-6 col-md-3"><h3 class="fw-bold">&lt; 2min</h3><p class="mb-0 text-muted">Lapor</p></div>
+      <div class="col-6 col-md-3"><h3 class="fw-bold">Aman</h3><p class="mb-0 text-muted">Data Terenkripsi</p></div>
+    </div>
+  </div>
+</section>
+
+<section id="kontak" class="py-5">
+  <div class="container">
+    <div class="row g-4">
+      <div class="col-lg-6">
+        <h4 class="fw-bold mb-2">Kontak</h4>
+        <p class="text-muted">Ada pertanyaan atau saran? Kirimkan pesan ke tim LAJARUS.</p>
+        <ul class="list-unstyled">
+          <li class="mb-2"><i class="bi bi-envelope me-2"></i> support@lajarus.app</li>
+          <li class="mb-2"><i class="bi bi-geo-alt me-2"></i> Kendari, Sulawesi Tenggara</li>
+        </ul>
+      </div>
+      <div class="col-lg-6">
+        <form class="p-4 border rounded-4 bg-white">
+          <div class="mb-3">
+            <label class="form-label">Nama</label>
+            <input type="text" class="form-control" placeholder="Nama lengkap">
+          </div>
+          <div class="mb-3">
+            <label class="form-label">Email</label>
+            <input type="email" class="form-control" placeholder="user@gmail.com">
+          </div>
+          <div class="mb-3">
+            <label class="form-label">Pesan</label>
+            <textarea class="form-control" rows="4" placeholder="Tulis pesan..."></textarea>
+          </div>
+          <button class="btn btn-rr">Kirim</button>
+        </form>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer class="pt-5">
+  <div class="container">
+    <div class="row gy-4">
+      <div class="col-lg-4">
+        <div class="d-flex align-items-center gap-2 mb-2">
+          <div class="glass-chip" style="background:#222;color:#ffd777;box-shadow:none;"><i class="bi bi-geo-alt"></i></div>
+          <h5 class="mb-0 text-white">LAJARUS</h5>
+        </div>
+        <p class="text-white-50 mb-0">Platform pelaporan jalan rusak di Kendari</p>
+      </div>
+      <div class="col-6 col-lg-2">
+        <h6 class="text-white mb-3">Produk</h6>
+        <ul class="list-unstyled mb-0 small">
+          <li><a href="#fitur">Fitur</a></li>
+          <li><a href="auth/login">Harga</a></li>
+          <li><a href="auth/login">FAQ</a></li>
+        </ul>
+      </div>
+      <div class="col-6 col-lg-2">
+        <h6 class="text-white mb-3">Perusahaan</h6>
+        <ul class="list-unstyled mb-0 small">
+          <li><a href="#">Tentang</a></li>
+          <li><a href="#kontak">Kontak</a></li>
+          <li><a href="#">Karir</a></li>
+        </ul>
+      </div>
+      <div class="col-12 col-lg-4">
+        <h6 class="text-white mb-3">Ikuti Kami</h6>
+        <div class="d-flex gap-2">
+          <a href="#" class="btn btn-sm btn-outline-light"><i class="bi bi-facebook"></i> FB</a>
+          <a href="#" class="btn btn-sm btn-outline-light"><i class="bi bi-twitter-x"></i> TW</a>
+          <a href="https://instagram.com/f1karrrr" class="btn btn-sm btn-outline-light"><i class="bi bi-instagram"></i> IG</a>
+        </div>
+      </div>
+    </div>
+    <div class="divider-x my-4"></div>
+    <div class="d-flex flex-column flex-md-row justify-content-between align-items-center pb-4">
+      <small class="text-white-50">© 2025 LAJARUS. Semua hak dilindungi.</small>
+    </div>
+  </div>
+</footer>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

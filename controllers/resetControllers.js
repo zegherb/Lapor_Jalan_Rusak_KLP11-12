@@ -1,11 +1,11 @@
 import { Result, validationResult } from "express-validator"
 import crypto from 'crypto'
 import bcrypt from 'bcrypt'
-import User from '../models/userModel.js'
 import { sendEmail } from '../Utils/sendMails.js'
 import { console } from "inspector"
 
-
+import db from '../models/index.js'
+const { User } = db
 
 // ====== forgot password =====
 // get forgot 

@@ -2,10 +2,11 @@ import bcrypt from 'bcrypt'
 import jwt from 'jsonwebtoken'
 import { validationResult } from 'express-validator'
 import dotenv from 'dotenv'
-import User from '../models/userModel.js'
-import Admin from '../models/adminModel.js'
+import db from '../models/index.js'
 
 dotenv.config()
+
+const { User, Admin } = db
 
 
 // =================== REGISTER ===================
